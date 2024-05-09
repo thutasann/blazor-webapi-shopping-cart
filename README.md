@@ -45,3 +45,13 @@ dotnet sln add Cart.Api/Cart.Api.csproj
 ```bash
 dotnet add reference ../Cart.Web/Cart.Web.csproj
 ```
+
+### EF Migration
+
+```bash
+dotnet ef migrations add Init
+```
+
+```bash
+dotnet ef database update
+```
