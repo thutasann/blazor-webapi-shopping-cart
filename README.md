@@ -4,7 +4,9 @@ This is the mini shopping cart app with
 
 - .NET8
 - Blazor WebAssembly
-- Web API
+- Dotnet Core
+- EF Core
+- MySQL
 
 ## Features
 
@@ -25,10 +27,17 @@ dotnet new sln -n BlazorAPICartApp.sln
 dotnet new blazorwasm -o Cart.Web
 ```
 
+### Dotnet Create Web API
+
+```bash
+dotnet new webapi -o Cart.Api
+```
+
 ### Add to Sln
 
 ```bash
 dotnet sln add Cart.Web/Cart.Web.csproj
+dotnet sln add Cart.Api/Cart.Api.csproj
 ```
 
 ### Reference Project (P2P)
