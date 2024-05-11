@@ -11,11 +11,16 @@ namespace Cart.Web.Pages
     {
         [Inject]
         public required IProductService ProductService { get; set; }
+        [Inject]
+        public required IShoppingCartService ShoppingCartService { get; set; }
         public IEnumerable<ProductDto>? Products { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Products = await ProductService.GetProductsAsync();
+            var ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
+            int? totalQty = ShoppingCartItems?.Sum(s => s.Qty);
+            ShoppingCartService.RaiseEventOnShoppingCartChanged(totalQty ?? 0);
         }
 
         /// <summary>

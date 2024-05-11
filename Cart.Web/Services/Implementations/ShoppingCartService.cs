@@ -10,6 +10,7 @@ namespace Cart.Web.Services.Implementations
     {
 
         private readonly HttpClient _httpClient = httpClient;
+        public event Action<int>? OnShoppingCartChanged;
 
         public async Task<CartItemDto?> AddItem(CartItemToAddDto cartItemToAddDto)
         {
@@ -80,6 +81,11 @@ namespace Cart.Web.Services.Implementations
                 Console.WriteLine($"Get Items error : {ex.Message}");
                 throw;
             }
+        }
+
+        public void RaiseEventOnShoppingCartChanged(int totalQty)
+        {
+            OnShoppingCartChanged?.Invoke(totalQty);
         }
 
         public async Task<CartItemDto?> UpdateQuantity(CartItemQtyUpdateDto cartItemQtyUpdateDto)

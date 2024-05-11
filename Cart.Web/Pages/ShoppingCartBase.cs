@@ -1,5 +1,6 @@
 using Cart.Lib.Dtos;
 using Cart.Web.Services.Contracts;
+using Cart.Web.Services.Implementations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -21,7 +22,7 @@ namespace Cart.Web.Pages
             try
             {
                 ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
-                CalcualteCartSummaryTotals();
+                CartChanged();
             }
             catch (Exception ex)
             {
@@ -34,7 +35,7 @@ namespace Cart.Web.Pages
         {
             await ShoppingCartService.DeleteItem(id);
             RemoveCartItem(id);
-            CalcualteCartSummaryTotals();
+            CartChanged();
         }
 
         public async Task UpdateQty_Input(int id)
@@ -57,7 +58,7 @@ namespace Cart.Web.Pages
                     var updatedItemDto = await ShoppingCartService.UpdateQuantity(updateItemDto);
 
                     UpdateItemTotalPrice(updatedItemDto!);
-                    CalcualteCartSummaryTotals();
+                    CartChanged();
                     await MakeUpdateQtyButtonVisible(id, false);
                 }
                 else
@@ -95,6 +96,12 @@ namespace Cart.Web.Pages
         {
             SetTotalPrice();
             SetTotalQuantity();
+        }
+
+        private void CartChanged()
+        {
+            CalcualteCartSummaryTotals();
+            ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
         }
 
         private void UpdateItemTotalPrice(CartItemDto cartItemDto)
