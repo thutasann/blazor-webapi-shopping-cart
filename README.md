@@ -1,6 +1,6 @@
 # Blazor WASM & WEB API Mini Cart App
 
-This is the mini shopping cart app with
+This is the mini shopping cart app crafted with
 
 - .NET8
 - Blazor WebAssembly
@@ -10,7 +10,10 @@ This is the mini shopping cart app with
 
 ## Features
 
-- Shopping Cart
+- Product Display
+- Add To Cart
+- Delete Item
+- Update Quantity
 - Payment (Credit and PayPal)
 
 ## Scripts
