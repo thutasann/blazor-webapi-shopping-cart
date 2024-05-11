@@ -40,7 +40,7 @@ namespace Cart.Web.Services.Implementations
         {
             try
             {
-                var response = await _httpClient.GetAsync($"api/{userId}/GetItems");
+                var response = await _httpClient.GetAsync($"api/cart/{userId}/GetItems");
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)

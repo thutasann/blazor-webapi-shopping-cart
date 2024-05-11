@@ -15,6 +15,9 @@ namespace Cart.Web.Pages
         [Inject]
         public required IShoppingCartService ShoppingCartService { get; set; }
 
+        [Inject]
+        public required NavigationManager NavigationManager { get; set; }
+
         public ProductDto? Product { get; set; }
 
         public string? ErrorMessage { get; set; }
@@ -38,6 +41,7 @@ namespace Cart.Web.Pages
             try
             {
                 var cartItemDto = await ShoppingCartService.AddItem(cartItemToAddDto);
+                NavigationManager.NavigateTo("/cart");
             }
             catch (Exception ex)
             {
