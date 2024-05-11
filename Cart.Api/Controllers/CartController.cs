@@ -1,4 +1,3 @@
-using Cart.Api.Entities;
 using Cart.Api.Extensions;
 using Cart.Api.Repositories.Contracts;
 using Cart.Lib.Dtos;
@@ -90,5 +89,33 @@ namespace Cart.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<CartItemDto>> DeleteItem([FromRoute] int id)
+        {
+            try
+            {
+                var cartItem = await _cartRepo.DeleteItem(id);
+                if (cartItem == null)
+                {
+                    return NotFound();
+                }
+
+                var product = await _productRepo.GetProductAsync(cartItem.CartId);
+
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                var cartItemDto = cartItem.ConvertToDto(product);
+                return Ok(cartItemDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
     }
 }

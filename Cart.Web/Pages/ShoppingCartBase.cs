@@ -8,7 +8,7 @@ namespace Cart.Web.Pages
     {
         [Inject]
         public required IShoppingCartService ShoppingCartService { get; set; }
-        public IEnumerable<CartItemDto>? ShoppingCartItems { get; set; }
+        public List<CartItemDto>? ShoppingCartItems { get; set; }
         public string? ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -23,5 +23,20 @@ namespace Cart.Web.Pages
                 ErrorMessage = ex.Message;
             }
         }
+
+        public async Task DeleteItem(int id)
+        {
+            await ShoppingCartService.DeleteItem(id);
+            RemoveCartItem(id);
+        }
+
+        private void RemoveCartItem(int id)
+        {
+            var cartItemDto = GetCartItem(id);
+            if (cartItemDto is not null && ShoppingCartItems is not null)
+                ShoppingCartItems.Remove(cartItemDto);
+        }
+
+        private CartItemDto? GetCartItem(int id) => ShoppingCartItems?.FirstOrDefault(s => s.Id == id);
     }
 }

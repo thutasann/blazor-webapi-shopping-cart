@@ -34,7 +34,8 @@ else
                         </span>
                         <div>
                             <button
-                            class="btn btn-danger sm"><i class="fa fa-trash"></i></button>
+                            @onclick="(() => DeleteItem(item.Id))"
+                            class="btn btn-danger sm"><i class="fa fa-trash"></i> Remove</button>
                         </div>
                     </div>
 
@@ -50,7 +51,7 @@ else
                 </a>
             </div>
         </div>
-        </div>
+      </div>
     }
     else
     {
