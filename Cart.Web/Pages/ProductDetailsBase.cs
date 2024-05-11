@@ -12,6 +12,9 @@ namespace Cart.Web.Pages
         [Inject]
         public required IProductService ProductService { get; set; }
 
+        [Inject]
+        public required IShoppingCartService ShoppingCartService { get; set; }
+
         public ProductDto? Product { get; set; }
 
         public string? ErrorMessage { get; set; }
@@ -27,6 +30,18 @@ namespace Cart.Web.Pages
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
+            }
+        }
+
+        protected async Task HandleAddToCart(CartItemToAddDto cartItemToAddDto)
+        {
+            try
+            {
+                var cartItemDto = await ShoppingCartService.AddItem(cartItemToAddDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Handle Add To Cart Error {ex.Message}");
             }
         }
     }

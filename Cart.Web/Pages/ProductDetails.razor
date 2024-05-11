@@ -25,7 +25,12 @@ else
                 </b>
             </p>
             <div>
-                <button class="btn btn-success"
+                <button class="btn btn-success" 
+                @onclick="() => HandleAddToCart(new CartItemToAddDto {
+                    CartId = HardCoded.CartId,
+                    ProductId = Product.Id,
+                    Qty = 1
+                })"
                 ><b>Add to Cart</b></button>
             </div>
         </div>
