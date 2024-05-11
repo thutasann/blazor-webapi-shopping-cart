@@ -1,5 +1,8 @@
 namespace Cart.Lib.Dtos
 {
+    /// <summary>
+    /// Cart Item Dto that include Product Info and Cart Info
+    /// </summary>
     public class CartItemDto
     {
         public int Id { get; set; }

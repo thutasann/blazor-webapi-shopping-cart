@@ -5,7 +5,18 @@ namespace Cart.Api.Repositories.Contracts
 {
     public interface IShopppingCartRepository
     {
+        /// <summary>
+        /// Add Cart item
+        /// </summary>
+        /// <param name="cartItemToAddDto"></param>
+        /// <returns></returns>
         Task<CartItem> AddItem(CartItemToAddDto cartItemToAddDto);
+        /// <summary>
+        /// Update Quantity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cartItemQtyUpdateDto"></param>
+        /// <returns></returns>
         Task<CartItem> UpdateQty(int id, CartItemQtyUpdateDto cartItemQtyUpdateDto);
         Task<CartItem?> DeleteItem(int id);
         /// <summary>

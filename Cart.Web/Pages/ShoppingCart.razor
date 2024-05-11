@@ -30,6 +30,7 @@ else
                             <input 
                             type="number" @bind="@item.Qty" />
                             <button data-itemId="@item.Id" class="btn btn-info btn-sm update-qty"
+                            @onclick="(() => UpdateQtyCartItem(item.Id, item.Qty))"
                             >Update Qty</button>
                         </span>
                         <div>
@@ -45,7 +46,7 @@ else
         <div class="col-md-3">
             <h5>Cart Summary</h5>
             <div class="mt-2">
-                <div>Total - &nbsp;<b></b></div>
+                <div>Total - (@TotalQuantity items)&nbsp;<b>@TotalPrice</b></div>
                 <a href="Checkout" class="btn btn-success">
                     <span class="oi oi-credit-card"></span>&nbsp; Proceed to Checkout 
                 </a>

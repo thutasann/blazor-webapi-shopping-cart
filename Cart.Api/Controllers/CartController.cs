@@ -117,5 +117,32 @@ namespace Cart.Api.Controllers
             }
         }
 
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult<CartItemDto>> UpdateQty([FromRoute] int id, CartItemQtyUpdateDto cartItemQtyUpdateDto)
+        {
+            _logger.LogInformation($"Qty : {cartItemQtyUpdateDto.Qty}");
+
+            try
+            {
+                var cartItem = await _cartRepo.UpdateQty(id, cartItemQtyUpdateDto);
+                if (cartItem == null)
+                {
+                    return NotFound();
+                }
+
+                var product = await _productRepo.GetProductAsync(cartItem.ProductId);
+                if (product is null)
+                {
+                    return NotFound();
+                }
+                var cartItemDto = cartItem.ConvertToDto(product);
+
+                return Ok(cartItemDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
