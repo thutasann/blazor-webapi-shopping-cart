@@ -33,11 +33,18 @@ dotnet new blazorwasm -o Cart.Web
 dotnet new webapi -o Cart.Api
 ```
 
+### Dotnet Create Lib
+
+```bash
+dotnet new classlib -n Cart.Lib
+```
+
 ### Add to Sln
 
 ```bash
 dotnet sln add Cart.Web/Cart.Web.csproj
 dotnet sln add Cart.Api/Cart.Api.csproj
+dotnet sln add Cart.Lib/Cart.Lib.csproj
 ```
 
 ### Reference Project (P2P)
