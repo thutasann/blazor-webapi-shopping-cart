@@ -1,11 +1,14 @@
 using Cart.Lib.Dtos;
 using Cart.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Cart.Web.Pages
 {
     public class ShoppingCartBase : ComponentBase
     {
+        [Inject]
+        public required IJSRuntime Js { get; set; }
         [Inject]
         public required IShoppingCartService ShoppingCartService { get; set; }
         public List<CartItemDto>? ShoppingCartItems { get; set; }
@@ -34,6 +37,11 @@ namespace Cart.Web.Pages
             CalcualteCartSummaryTotals();
         }
 
+        public async Task UpdateQty_Input(int id)
+        {
+            await MakeUpdateQtyButtonVisible(id, true);
+        }
+
         public async Task UpdateQtyCartItem(int id, int qty)
         {
             try
@@ -50,6 +58,7 @@ namespace Cart.Web.Pages
 
                     UpdateItemTotalPrice(updatedItemDto!);
                     CalcualteCartSummaryTotals();
+                    await MakeUpdateQtyButtonVisible(id, false);
                 }
                 else
                 {
@@ -66,6 +75,11 @@ namespace Cart.Web.Pages
                 Console.WriteLine($"Update Qty Cart Item Error : {ex.Message}");
                 throw;
             }
+        }
+
+        private async Task MakeUpdateQtyButtonVisible(int id, bool visible)
+        {
+            await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
         }
 
         private void RemoveCartItem(int id)
