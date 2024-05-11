@@ -50,7 +50,7 @@ dotnet sln add Cart.Lib/Cart.Lib.csproj
 ### Reference Project (P2P)
 
 ```bash
-dotnet add reference ../Cart.Web/Cart.Web.csproj
+dotnet add reference ../Cart.Lib/Cart.Lib.csproj
 ```
 
 ### EF Migration

@@ -1,4 +1,7 @@
 using Cart.Api.Data;
+using Cart.Api.Middlewares;
+using Cart.Api.Repositories.Contracts;
+using Cart.Api.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,13 +11,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DB Context
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContextPool<AppDbContext>(options =>
 {
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
 
+// Regigster Services
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 var app = builder.Build();
+
+// Middleware
+app.UseMiddleware<ResponseTimeMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
