@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 namespace Cart.Lib.Dtos
 {
     public class ProductDto

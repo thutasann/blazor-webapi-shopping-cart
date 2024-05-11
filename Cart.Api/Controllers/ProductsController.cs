@@ -31,9 +31,32 @@ namespace Cart.Api.Controllers
                 }
             }
             catch (Exception ex)
-
             {
                 Console.WriteLine($"--> Product Get Error : {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProductDto>> GetProduct([FromRoute] int id)
+        {
+            try
+            {
+                var product = await _productRepo.GetProductAsync(id);
+                if (product == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    var productCategory = await _productRepo.GetCategoryAsync(product.CategoryId);
+                    var productDto = product.ConvertToDto(productCategory);
+                    return Ok(productDto);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Product Get By Id Error : {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
             }
         }

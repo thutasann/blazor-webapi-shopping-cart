@@ -38,11 +38,9 @@ var app = builder.Build();
 // Middleware
 app.UseMiddleware<ResponseTimeMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseCors("myAppCors");
 app.UseHttpsRedirection();
 app.UseAuthorization();

@@ -11,12 +11,11 @@ namespace Cart.Web.Pages
     {
         [Inject]
         public required IProductService ProductService { get; set; }
-        public required IEnumerable<ProductDto> Products { get; set; }
+        public IEnumerable<ProductDto>? Products { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Products = await ProductService.GetProductsAsync();
-            Console.WriteLine("Products Length " + Products.Count());
         }
 
         /// <summary>

@@ -15,14 +15,16 @@ namespace Cart.Api.Repositories.Implementations
             return categories;
         }
 
-        public Task<ProductCategory> GetCategoryAsync(int id)
+        public async Task<ProductCategory> GetCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            var category = await _context.ProductCategories.FirstOrDefaultAsync(c => c.Id == id);
+            return category!;
         }
 
-        public Task<Product> GetProductAsync(int id)
+        public async Task<Product?> GetProductAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(id);
+            return product;
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync()

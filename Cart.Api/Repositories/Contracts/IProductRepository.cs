@@ -6,7 +6,7 @@ namespace Cart.Api.Repositories.Contracts
     {
         Task<IEnumerable<Product>> GetProductsAsync();
         Task<IEnumerable<ProductCategory>> GetCategoriesAsync();
-        Task<Product> GetProductAsync(int id);
+        Task<Product?> GetProductAsync(int id);
         Task<ProductCategory> GetCategoryAsync(int id);
     }
 }
