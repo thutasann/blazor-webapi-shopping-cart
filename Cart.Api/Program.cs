@@ -20,6 +20,7 @@ builder.Services.AddDbContextPool<AppDbContext>(options =>
 
 // Regigster Services
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IShopppingCartRepository, ShoppingCartRespository>();
 
 // ------ Cors
 builder.Services.AddCors(options =>
