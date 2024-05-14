@@ -23,22 +23,19 @@ namespace Cart.Api.Repositories.Implementations
 
         public async Task<IEnumerable<Product>?> GetItemsByCategory(int id)
         {
-            var products = await (from product in _context.Products
-                                  where product.CategoryId == id
-                                  select product
-                                ).ToListAsync();
+            var products = await _context.Products.Include(p => p.ProductCategory).Where(p => p.CategoryId == id).ToListAsync();
             return products;
         }
 
         public async Task<Product?> GetProductAsync(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.ProductCategory).SingleOrDefaultAsync(p => p.Id == id);
             return product;
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Include(p => p.ProductCategory).ToArrayAsync();
             return products;
         }
     }

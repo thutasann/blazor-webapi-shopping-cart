@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Cart.Api.Entities
 {
     public class Product
@@ -9,5 +11,8 @@ namespace Cart.Api.Entities
         public decimal Price { get; set; }
         public int Qty { get; set; }
         public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public ProductCategory? ProductCategory { get; set; }
     }
 }

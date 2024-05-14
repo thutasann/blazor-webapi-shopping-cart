@@ -8,11 +8,9 @@ namespace Cart.Api.Extensions
     /// </summary>
     public static class DtoConversions
     {
-        public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products, IEnumerable<ProductCategory> productCategories)
+        public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products)
         {
             var productDto = (from product in products
-                              join productCategory in productCategories
-                              on product.CategoryId equals productCategory.Id
                               select new ProductDto
                               {
                                   Id = product.Id,
@@ -21,13 +19,13 @@ namespace Cart.Api.Extensions
                                   ImageURL = product.ImageURL,
                                   Price = product.Price,
                                   Qty = product.Qty,
-                                  CategoryId = product.CategoryId,
-                                  CategoryName = productCategory.Name
+                                  CategoryId = product.ProductCategory.Id,
+                                  CategoryName = product.ProductCategory.Name
                               }).ToList();
             return productDto;
         }
 
-        public static ProductDto ConvertToDto(this Product product, ProductCategory productCategory)
+        public static ProductDto ConvertToDto(this Product product)
         {
             return new ProductDto
             {
@@ -37,8 +35,8 @@ namespace Cart.Api.Extensions
                 ImageURL = product.ImageURL,
                 Price = product.Price,
                 Qty = product.Qty,
-                CategoryId = product.CategoryId,
-                CategoryName = productCategory.Name
+                CategoryId = product.ProductCategory.Id,
+                CategoryName = product.ProductCategory.Name
             };
         }
 

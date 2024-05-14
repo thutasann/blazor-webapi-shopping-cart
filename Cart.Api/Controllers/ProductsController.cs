@@ -2,7 +2,6 @@ using Cart.Api.Extensions;
 using Cart.Api.Repositories.Contracts;
 using Cart.Lib.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 
 namespace Cart.Api.Controllers
 {
@@ -19,15 +18,14 @@ namespace Cart.Api.Controllers
             try
             {
                 var products = await _productRepo.GetProductsAsync();
-                var productCategories = await _productRepo.GetCategoriesAsync();
 
-                if (products == null || productCategories == null)
+                if (products == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    var productDtos = products.ConvertToDto(productCategories);
+                    var productDtos = products.ConvertToDto();
                     return Ok(productDtos);
                 }
             }
@@ -50,8 +48,7 @@ namespace Cart.Api.Controllers
                 }
                 else
                 {
-                    var productCategory = await _productRepo.GetCategoryAsync(product.CategoryId);
-                    var productDto = product.ConvertToDto(productCategory);
+                    var productDto = product.ConvertToDto();
                     return Ok(productDto);
                 }
             }
@@ -86,8 +83,7 @@ namespace Cart.Api.Controllers
             try
             {
                 var products = await _productRepo.GetItemsByCategory(categoryId);
-                var productCategories = await _productRepo.GetCategoriesAsync();
-                var productDtos = products!.ConvertToDto(productCategories);
+                var productDtos = products?.ConvertToDto();
                 return Ok(productDtos);
             }
             catch (Exception ex)
