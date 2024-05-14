@@ -16,19 +16,25 @@ namespace Cart.Web.Pages
         public required IShoppingCartService ShoppingCartService { get; set; }
 
         [Inject]
+        public required IManageProductsLocalStorageService ManageProductsLocalStorageService { get; set; }
+
+        [Inject]
+        public required IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
+
+        [Inject]
         public required NavigationManager NavigationManager { get; set; }
 
         public ProductDto? Product { get; set; }
 
         public string? ErrorMessage { get; set; }
+        private List<CartItemDto>? ShoppingCartItems { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                Console.WriteLine("Id => " + Id);
-                Product = await ProductService.GetProductByIdAsync(Id);
-                Console.WriteLine("Product" + Product?.Name);
+                ShoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
+                Product = await GetProductById(Id);
             }
             catch (Exception ex)
             {
@@ -47,6 +53,17 @@ namespace Cart.Web.Pages
             {
                 Console.WriteLine($"Handle Add To Cart Error {ex.Message}");
             }
+        }
+
+        private async Task<ProductDto> GetProductById(int id)
+        {
+            var productDtos = await ManageProductsLocalStorageService.GetCollection();
+
+            if (productDtos != null)
+            {
+                return productDtos.SingleOrDefault(p => p.Id == id)!;
+            }
+            return null!;
         }
     }
 }

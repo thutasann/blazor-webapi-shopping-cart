@@ -8,7 +8,6 @@ namespace Cart.Web.Services.Implementations
 {
     public class ShoppingCartService(HttpClient httpClient) : IShoppingCartService
     {
-
         private readonly HttpClient _httpClient = httpClient;
         public event Action<int>? OnShoppingCartChanged;
 

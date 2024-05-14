@@ -1,6 +1,5 @@
 using Cart.Lib.Dtos;
 using Cart.Web.Services.Contracts;
-using Cart.Web.Services.Implementations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -10,9 +9,15 @@ namespace Cart.Web.Pages
     {
         [Inject]
         public required IJSRuntime Js { get; set; }
+
         [Inject]
         public required IShoppingCartService ShoppingCartService { get; set; }
+
+        [Inject]
+        public required IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
+
         public List<CartItemDto>? ShoppingCartItems { get; set; }
+
         public string? ErrorMessage { get; set; }
         protected string? TotalPrice { get; set; }
         protected int TotalQuantity { get; set; }
@@ -21,7 +26,7 @@ namespace Cart.Web.Pages
         {
             try
             {
-                ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
+                ShoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
                 CartChanged();
             }
             catch (Exception ex)
@@ -83,11 +88,13 @@ namespace Cart.Web.Pages
             await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
         }
 
-        private void RemoveCartItem(int id)
+        private async void RemoveCartItem(int id)
         {
             var cartItemDto = GetCartItem(id);
             if (cartItemDto is not null && ShoppingCartItems is not null)
                 ShoppingCartItems.Remove(cartItemDto);
+
+            await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems!);
         }
 
         private CartItemDto? GetCartItem(int id) => ShoppingCartItems?.FirstOrDefault(s => s.Id == id);
@@ -104,13 +111,15 @@ namespace Cart.Web.Pages
             ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
         }
 
-        private void UpdateItemTotalPrice(CartItemDto cartItemDto)
+        private async void UpdateItemTotalPrice(CartItemDto cartItemDto)
         {
             var item = GetCartItem(cartItemDto.Id);
             if (item is not null)
             {
                 item.TotalPrice = cartItemDto.Price * cartItemDto.Qty;
             }
+
+            await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems!);
         }
 
         private void SetTotalPrice() => TotalPrice = ShoppingCartItems!.Sum(s => s.TotalPrice).ToString("");

@@ -17,11 +17,14 @@ namespace Cart.Web.Pages
         [Inject]
         public required IShoppingCartService ShoppingCartService { get; set; }
 
+        [Inject]
+        public required IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
+                ShoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
                 if (ShoppingCartItems is not null)
                 {
                     Guid orderGuid = Guid.NewGuid();
