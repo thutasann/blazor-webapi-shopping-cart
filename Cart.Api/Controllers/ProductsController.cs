@@ -2,6 +2,7 @@ using Cart.Api.Extensions;
 using Cart.Api.Repositories.Contracts;
 using Cart.Lib.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 
 namespace Cart.Api.Controllers
 {
@@ -74,6 +75,24 @@ namespace Cart.Api.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Product Categories Error : {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet]
+        [Route("{categoryId:int}/GetItemsByCategory")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetItemsByCategory(int categoryId)
+        {
+            try
+            {
+                var products = await _productRepo.GetItemsByCategory(categoryId);
+                var productCategories = await _productRepo.GetCategoriesAsync();
+                var productDtos = products!.ConvertToDto(productCategories);
+                return Ok(productDtos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Products By Category Error : {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
             }
         }
