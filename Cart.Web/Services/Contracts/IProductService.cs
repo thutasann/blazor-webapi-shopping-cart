@@ -6,5 +6,6 @@ namespace Cart.Web.Services.Contracts
     {
         Task<IEnumerable<ProductDto>?> GetProductsAsync();
         Task<ProductDto?> GetProductByIdAsync(int id);
+        Task<IEnumerable<ProductCategoryDto>?> GetProductCategories();
     }
 }

@@ -38,6 +38,33 @@ namespace Cart.Web.Services.Implementations
             }
         }
 
+        public async Task<IEnumerable<ProductCategoryDto>?> GetProductCategories()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/products/GetProductCategories");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return Enumerable.Empty<ProductCategoryDto>();
+                    }
+                    return await response.Content.ReadFromJsonAsync<IEnumerable<ProductCategoryDto>>();
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"HTTP Status code - {response.StatusCode} Message - {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Get ProductCategories Get Async Error {ex.Message}");
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<ProductDto>?> GetProductsAsync()
         {
             try

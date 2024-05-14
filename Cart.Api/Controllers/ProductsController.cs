@@ -60,5 +60,22 @@ namespace Cart.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
             }
         }
+
+        [HttpGet]
+        [Route(nameof(GetProductCategories))]
+        public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetProductCategories()
+        {
+            try
+            {
+                var productCategories = await _productRepo.GetCategoriesAsync();
+                var productCategoriesDto = productCategories.ConvertToDto();
+                return Ok(productCategoriesDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Product Categories Error : {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
+        }
     }
 }
